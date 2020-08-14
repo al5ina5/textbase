@@ -24,8 +24,10 @@
     "reload": "^3.1.0",
     "rimraf": "^3.0.2",
     "showdown": "^1.9.1",
+    "showdown-custom-class": "^1.0.0",
     "showdown-footnotes": "^2.1.2",
     "showdown-highlight": "^2.1.5",
+    "showdown-icon": "^2.0.0",
     "yarn": "^1.22.4"
   },
   "name": "textbase",

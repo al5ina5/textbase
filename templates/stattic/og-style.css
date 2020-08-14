@@ -1,0 +1,180 @@
+@import url('https://unpkg.com/reset-css@5.0.1/reset.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400,500;700&display=swap');
+
+html {
+    background-color: #272b33;
+    color: #ABB2BF;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    max-width: 960px;
+    margin: auto;
+    padding: 4rem 2rem;
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+p,
+blockquote,
+ul,
+ol {
+    margin-bottom: 1rem;
+}
+
+em {
+    font-style: italic;
+}
+
+hr {
+    opacity: 0.1;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+a {
+    color: #528BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+h1,h2,h3,h4,h5,h6{
+    color: white;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+h4 {}
+
+h5 {
+    opacity: 0.5;
+}
+
+h6 {
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+b, strong {
+    font-weight: 900;
+}
+
+code {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.3rem;
+    color: #E2C08D;
+    border-radius: 3px;
+}
+
+pre {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 3px;
+    overflow: auto;
+    max-height: 600px;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+blockquote {
+    color: #ABB2BF;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 8px solid rgba(171, 178, 192, 0.2);
+    opacity: 0.8;
+}
+
+ul, ol {
+    padding-left: 2rem;
+}
+
+li::before {
+    content: "•";
+    margin-right: 0.5rem;
+} 
+
+ol {
+   list-style: none;
+   counter-reset: item;
+}
+
+ol > li {
+   counter-increment: item;
+}
+
+ol >  li::before {
+    content: counter(item);
+}
+
+table {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+thead {
+    font-weight: 900;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 3px 3px 0 0;
+}
+
+tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+th, td {
+    padding: 0.5rem 1rem;
+}
+
+header {
+    margin-bottom: 4rem;
+}
+
+nav {
+    text-align: center;
+}
+
+nav > a {
+    margin: 0 0.5rem;
+}
+
+footer {
+    opacity: 0.5;
+    margin-top: 4rem;
+    text-align: center;
+}
