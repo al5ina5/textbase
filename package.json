@@ -20,6 +20,7 @@
     "livereload": "^0.9.1",
     "mkdirp": "^1.0.4",
     "open": "^7.1.0",
+    "recursive-readdir": "^2.2.2",
     "reload": "^3.1.0",
     "rimraf": "^3.0.2",
     "showdown": "^1.9.1",
@@ -28,7 +29,7 @@
     "yarn": "^1.22.4"
   },
   "name": "textbase",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "main": "index.js",
   "bin": "index.js",
   "author": "Sebastian Alsina <alsinas@me.com>",
