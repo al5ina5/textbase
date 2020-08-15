@@ -13,12 +13,6 @@ switch (program.args[0]) {
     case 'build':
         lib.generate()
         break
-    case 'help':
-        lib.help()
-        break
-    case 'deploy':
-        console.log(`${`Run`.yellow} ${`vercel`.blue} ${`or`.yellow} ${`netlify`.blue} ${`to deploy.`.yellow}`)
-        break
     default:
         lib.dev()
         break

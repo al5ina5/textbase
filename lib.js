@@ -1,45 +1,19 @@
+
+const page = require('./lib/page')
+var options = require('./options')
 const fs = require('fs-extra')
-const showdown = require('showdown')
-const Handlebars = require('handlebars')
 const async = require('async')
-const minify = require('html-minifier').minify
 const colors = require('colors')
-const rimraf = require('rimraf')
-const beautify = require('js-beautify').html
 const chokidar = require('chokidar')
-const footnotes = require('showdown-footnotes')
 const { program } = require('commander')
 const express = require('express')
 const http = require('http')
 const reload = require('reload')
-const cp = require('cp');
-const cpr = require('cpr');
-const { exists, watch } = require('fs-extra')
-const inquirer = require('inquirer');
-const open = require('open');
-const recursive = require("recursive-readdir")
-const { mkdir } = require('fs')
-
-const showdownIcon = require('showdown-icon')
-const showdownCustomClass = require('showdown-custom-class')
+const cp = require('cp')
+const cpr = require('cpr')
+const inquirer = require('inquirer')
 
 program.parse(process.argv)
-
-var converter = new showdown.Converter({
-    extensions: [footnotes, showdownCustomClass, 'icon'],
-    tables: true
-})
-
-var options = {
-    publicFolder: './public',
-    pagesFolder: './pages',
-    siteFolder: './_site',
-    templateFolder: __dirname + '/templates/textbase',
-    minify: false,
-    erase: true,
-    dev: false,
-    showExtensions: false
-}
 
 exports.updateOptions = (addOptions, callback) => {
     fs.exists(process.cwd() + '/_textbase.js', (_textbaseExists) => {
@@ -60,16 +34,16 @@ exports.generate = async (ops) => {
                 callback(null)
             })
         },
-        eraseSite = (callback) => {
-            if (options.erase) {
-                rimraf(options.siteFolder, (error) => {
-                    if (error) callback('Error during rimraf.')
-                    callback(null)
-                })
-            } else {
-                callback(null)
-            }
-        },
+        // eraseSite = (callback) => {
+        //     if (options.erase) {
+        //         rimraf(options.siteFolder, (error) => {
+        //             if (error) callback('Error during rimraf.')
+        //             callback(null)
+        //         })
+        //     } else {
+        //         callback(null)
+        //     }
+        // },
         prepareSite = (callback) => {
             fs.mkdirpSync(options.siteFolder)
 
@@ -79,81 +53,13 @@ exports.generate = async (ops) => {
                 fs.copy(options.publicFolder + '/.', options.siteFolder)
             }
 
-            var pages = fs.readdirSync(options.pagesFolder)
-
-            var handlebarsSource = fs.readFileSync(options.templateFolder + '/index.html').toString()
-            var handlebarsTemplate = Handlebars.compile(handlebarsSource)
-
-            recursive(options.pagesFolder, function (err, files) {
-                files.map((file, index) => {
-
-                    if (!file.endsWith('md')) return
-
-                    var fileSplit = file.split('/')
-                    var fileName = file.split('/').pop().replace('md', 'html')
-                    var filePath = () => {
-                        fileSplit.pop()
-                        fileSplit.shift()
-                        var path = '/' + fileSplit.join('/')
-                        if (path != '/') path = path + '/'
-                        return path
-                    }
-
-                    if (!options.showExtensions && fileName != 'index.html') {
-                        var destinationFolder = options.siteFolder + filePath() + fileName.split('.')[0]
-                        var destinationFile = destinationFolder + '/index.html'
-                    } else {
-                        var destinationFolder = options.siteFolder + filePath()
-                        var destinationFile = destinationFolder + fileName
-                    }
-
-                    // console.log(destinationFolder)
-                    // console.log(destinationFile)
-                    // console.log('')
-
-                    fs.mkdirp(destinationFolder, (err) => {
-                        if (err) console.log(err)
-
-                        var markdown = fs.readFileSync(file).toString()
-
-                        if (options.minify) {
-                            var html = minify(handlebarsTemplate({
-                                html: converter.makeHtml(markdown),
-                                // header: headerHTML,
-                                // footer: footerHTML
-                            }), {
-                                removeAttributeQuotes: true,
-                                collapseWhitespace: true,
-                                removeComments: true
-                            })
-                        } else {
-                            var html = beautify(handlebarsTemplate({
-                                html: converter.makeHtml(markdown),
-                                // header: headerHTML,
-                                // footer: footerHTML
-                            }))
-                        }
-
-                        if (options.dev) {
-                            fs.writeFile(destinationFile, html + '<script src="/reload/reload.js"></script>')
-                                .then(() => {
-                                    console.log(`DEV ${file.white} >> ${destinationFile.blue}`.brightYellow)
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                })
-                        } else {
-                            fs.writeFile(destinationFile, html)
-                                .then(() => {
-                                    console.log(`${file.white} >> ${destinationFile.blue}`.brightYellow)
-                                })
-                                .catch((error) => {
-                                    console.log(error)
-                                })
-                        }
-                    })
+            page.all((pageData) => {
+                page.compile(pageData.pageRoute, () => {
+                    console.log(pageData.pageRoute, 'recompiled.')
                 })
             })
+
+            page.createDirectoryRoute('/_routes.html')
 
             callback(null)
         }
@@ -187,6 +93,11 @@ exports.dev = () => {
                 // open('http://localhost:' + server.address().port)
             })
 
+            // 404 handling.
+            app.get('*', function (req, res) {
+                // res.send('404', 404)
+                res.redirect('/404')
+            })
 
             chokidar.watch(options.siteFolder + '/*').on('change', (event, path) => {
                 reloadReturned.reload()
@@ -203,9 +114,11 @@ exports.dev = () => {
             options.templateFolder,
             process.cwd() + '/_textbase.js'
         ])
-        watcher.on('change', (event, path) => {
-            exports.generate({ dev: true })
+        watcher.on('change', (path) => {
             console.log('Live Preview:'.brightYellow + (' http://localhost:' + server.address().port).blue)
+            page.compile(path, () => {
+                console.log(path, 'compiled.')
+            })
         })
     })
 }
@@ -260,12 +173,4 @@ exports.eject = () => {
         .catch(error => {
             console.log(error)
         })
-}
-
-exports.help = () => {
-    console.log('Available Commands:'.brightYellow)
-    console.log('textbase'.blue.white + ' - Run the generator.'.brightYellow)
-    console.log('textbase dev'.blue + ' - Development mode.'.brightYellow)
-    console.log('textbase eject'.blue + ' - Eject the configuration to your current directory.'.brightYellow)
-    console.log('textbase deploy'.blue + ' - Deploy your textbase site.'.brightYellow)
 }
