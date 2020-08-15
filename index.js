@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander')
-const lib = require('./lib')
+const lib = require('./lib/lib')
 
 program.parse(process.argv)
 
@@ -11,7 +11,10 @@ switch (program.args[0]) {
         lib.eject()
         break
     case 'build':
-        lib.generate()
+        lib.build()
+        break
+    case 'start':
+        lib.start()
         break
     default:
         lib.dev()

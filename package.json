@@ -24,6 +24,7 @@
     "recursive-readdir": "^2.2.2",
     "reload": "^3.1.0",
     "rimraf": "^3.0.2",
+    "rsync": "^0.6.1",
     "showdown": "^1.9.1",
     "showdown-custom-class": "^1.0.0",
     "showdown-footnotes": "^2.1.2",
