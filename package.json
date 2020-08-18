@@ -20,6 +20,7 @@
     "js-beautify": "^1.11.0",
     "livereload": "^0.9.1",
     "mkdirp": "^1.0.4",
+    "node-cleanup": "^2.1.2",
     "open": "^7.1.0",
     "recursive-readdir": "^2.2.2",
     "reload": "^3.1.0",
