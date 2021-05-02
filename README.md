@@ -13,6 +13,6 @@ echo '# Homepage' > index.md
 textbase dev
 ```
 
-## [Get Started](/docs)
+## [Get Started](http://textbase.xyz/docs)
 
 ...or view this website's [GitHub repo](https://github.com/al5ina5/textbase).
